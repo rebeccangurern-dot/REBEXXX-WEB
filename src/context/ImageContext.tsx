@@ -10,8 +10,8 @@ interface ImageContextType {
   fileInputRef: React.RefObject<HTMLInputElement | null>;
 }
 
-const STORAGE_KEY = 'rebexxx_official_original_image';
-const DEFAULT_IMAGE_FALLBACK = '/images/rebexxx_official_portrait_1791896808320.jpg';
+const STORAGE_KEY = 'rebexxx_official_original_image_v2';
+const DEFAULT_IMAGE_FALLBACK = '/images/rebexxx_official_portrait.png';
 
 const ImageContext = createContext<ImageContextType | undefined>(undefined);
 
