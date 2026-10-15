@@ -8,7 +8,7 @@ import { useSocials } from '../context/SocialContext';
 
 export const MusicSection: React.FC = () => {
   const { artistImage } = useArtistImage();
-  const { getLink, openEditorForPlatform } = useSocials();
+  const { getLink, openEditorForPlatform, showToast } = useSocials();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrackId, setCurrentTrackId] = useState(UNRELEASED_TRACKS[0].id);
   const [expandedTrackId, setExpandedTrackId] = useState<string | null>(UNRELEASED_TRACKS[0].id);
@@ -454,10 +454,15 @@ export const MusicSection: React.FC = () => {
             {(() => {
               const sp = getLink('Spotify') || {
                 platform: 'Spotify',
-                url: 'https://open.spotify.com',
-                handle: 'REBEXXX',
-                status: 'Active',
+                url: '',
+                handle: 'REBEXXX (Launching Soon)',
+                status: 'Coming Soon',
               };
+              const isComingSoon =
+                sp.status === 'Coming Soon' ||
+                !sp.url ||
+                sp.url === 'https://open.spotify.com' ||
+                !sp.url.includes('/artist/');
               return (
                 <div className="p-5 bg-[#08080a] border border-[#C7C9CE]/15 hover:border-[#1DB954]/50 transition-colors flex flex-col justify-between group">
                   <div className="space-y-3">
@@ -470,34 +475,51 @@ export const MusicSection: React.FC = () => {
                           SPOTIFY
                         </span>
                       </div>
-                      <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-950/40 text-emerald-300 border border-emerald-500/30">
-                        {sp.status}
+                      <span className={
+                        isComingSoon
+                          ? 'text-[10px] font-mono px-2 py-0.5 border bg-amber-950/40 text-amber-300 border-amber-500/30'
+                          : 'text-[10px] font-mono px-2 py-0.5 border bg-emerald-950/40 text-emerald-300 border-emerald-500/30'
+                      }>
+                        {isComingSoon ? 'COMING SOON' : 'ACTIVE'}
                       </span>
                     </div>
 
                     <p className="text-xs text-[#C7C9CE]/70">
-                      Official artist page, pre-save upcoming releases & follow discography.
+                      {isComingSoon
+                        ? 'Official artist page in distributor setup. Discography & pre-saves launching soon.'
+                        : 'Official artist page, pre-save upcoming releases & follow discography.'}
                     </p>
                     <div className="text-[11px] font-mono text-[#C7C9CE]/50 truncate">
-                      {sp.handle}
+                      {isComingSoon ? 'REBEXXX (In Verification)' : sp.handle}
                     </div>
                   </div>
 
                   <div className="pt-4 flex items-center justify-between gap-2 border-t border-[#C7C9CE]/10 mt-4">
-                    <a
-                      href={sp.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-mono text-[#F2EEE9] hover:text-[#1DB954] transition-colors"
-                    >
-                      <span>Open on Spotify</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
+                    {isComingSoon ? (
+                      <button
+                        type="button"
+                        onClick={() => showToast('✨ REBEXXX on Spotify is launching soon! Currently undergoing distributor setup.')}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-300/90 hover:text-amber-200 transition-colors"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span>Launching Soon</span>
+                      </button>
+                    ) : (
+                      <a
+                        href={sp.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs font-mono text-[#F2EEE9] hover:text-[#1DB954] transition-colors"
+                      >
+                        <span>Open on Spotify</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                     <button
                       onClick={() => openEditorForPlatform('Spotify')}
                       className="text-[10px] font-mono text-[#C7C9CE]/50 hover:text-white px-2 py-1 border border-[#C7C9CE]/20"
                     >
-                      Edit URL
+                      {isComingSoon ? 'Connect URL' : 'Edit URL'}
                     </button>
                   </div>
                 </div>

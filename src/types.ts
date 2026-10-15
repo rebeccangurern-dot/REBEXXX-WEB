@@ -62,6 +62,6 @@ export interface SocialLink {
   platform: string;
   handle: string;
   url: string;
-  status: 'Active' | 'Pending Release' | 'Pre-Save Active';
+  status: 'Active' | 'Pending Release' | 'Pre-Save Active' | 'Coming Soon';
   note: string;
 }

@@ -9,13 +9,19 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => {
-  const { getLink, openEditorForPlatform } = useSocials();
+  const { getLink, openEditorForPlatform, showToast } = useSocials();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
 
   const ytLink = getLink('YouTube')?.url || getLink('YouTube Music')?.url || 'https://youtube.com/@rebexxxe?si=Pua7V5_i7NCPGj3n';
-  const spLink = getLink('Spotify')?.url || 'https://open.spotify.com';
+  const spItem = getLink('Spotify');
+  const spLink = spItem?.url || '';
+  const isSpotifyComingSoon =
+    !spLink ||
+    spLink === 'https://open.spotify.com' ||
+    !spLink.includes('/artist/') ||
+    spItem?.status === 'Coming Soon';
   const igLink = getLink('Instagram')?.url || 'https://instagram.com/rebabesss?rpxt=MWk3NTczNjgxdHFseA%3D%3D';
 
   useEffect(() => {
@@ -103,18 +109,33 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => 
                   </svg>
                 </a>
 
-                <a
-                  href={spLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="Spotify"
-                  className="p-1.5 text-[#C7C9CE]/70 hover:text-[#1DB954] hover:bg-white/5 transition-colors"
-                  aria-label="REBEXXX on Spotify"
-                >
-                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.216.353-.675.467-1.028.251-2.817-1.722-6.363-2.112-10.54-1.157-.403.092-.803-.16-.895-.563-.092-.403.16-.803.563-.895 4.57-1.044 8.489-.606 11.649 1.336.353.216.467.675.251 1.028zm1.47-3.268c-.272.443-.852.585-1.295.313-3.224-1.982-8.14-2.556-11.954-1.398-.498.151-1.031-.132-1.182-.63-.151-.498.132-1.031.63-1.182 4.364-1.325 9.794-.683 13.488 1.587.443.272.585.852.313 1.295zm.126-3.41c-3.864-2.294-10.244-2.506-13.93-1.387-.594.18-1.223-.153-1.403-.747-.18-.594.153-1.223.747-1.403 4.237-1.286 11.282-1.044 15.727 1.593.535.317.711 1.009.394 1.544-.317.535-1.009.711-1.544.394z"/>
-                  </svg>
-                </a>
+                {isSpotifyComingSoon ? (
+                  <button
+                    type="button"
+                    onClick={() => showToast('✨ REBEXXX on Spotify is launching soon! Artist profile in distributor setup.')}
+                    title="Spotify (Launching Soon)"
+                    className="p-1.5 text-[#C7C9CE]/70 hover:text-[#1DB954] hover:bg-white/5 transition-colors relative"
+                    aria-label="REBEXXX on Spotify (Coming Soon)"
+                  >
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.216.353-.675.467-1.028.251-2.817-1.722-6.363-2.112-10.54-1.157-.403.092-.803-.16-.895-.563-.092-.403.16-.803.563-.895 4.57-1.044 8.489-.606 11.649 1.336.353.216.467.675.251 1.028zm1.47-3.268c-.272.443-.852.585-1.295.313-3.224-1.982-8.14-2.556-11.954-1.398-.498.151-1.031-.132-1.182-.63-.151-.498.132-1.031.63-1.182 4.364-1.325 9.794-.683 13.488 1.587.443.272.585.852.313 1.295zm.126-3.41c-3.864-2.294-10.244-2.506-13.93-1.387-.594.18-1.223-.153-1.403-.747-.18-.594.153-1.223.747-1.403 4.237-1.286 11.282-1.044 15.727 1.593.535.317.711 1.009.394 1.544-.317.535-1.009.711-1.544.394z"/>
+                    </svg>
+                    <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  </button>
+                ) : (
+                  <a
+                    href={spLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Spotify"
+                    className="p-1.5 text-[#C7C9CE]/70 hover:text-[#1DB954] hover:bg-white/5 transition-colors"
+                    aria-label="REBEXXX on Spotify"
+                  >
+                    <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.216.353-.675.467-1.028.251-2.817-1.722-6.363-2.112-10.54-1.157-.403.092-.803-.16-.895-.563-.092-.403.16-.803.563-.895 4.57-1.044 8.489-.606 11.649 1.336.353.216.467.675.251 1.028zm1.47-3.268c-.272.443-.852.585-1.295.313-3.224-1.982-8.14-2.556-11.954-1.398-.498.151-1.031-.132-1.182-.63-.151-.498.132-1.031.63-1.182 4.364-1.325 9.794-.683 13.488 1.587.443.272.585.852.313 1.295zm.126-3.41c-3.864-2.294-10.244-2.506-13.93-1.387-.594.18-1.223-.153-1.403-.747-.18-.594.153-1.223.747-1.403 4.237-1.286 11.282-1.044 15.727 1.593.535.317.711 1.009.394 1.544-.317.535-1.009.711-1.544.394z"/>
+                    </svg>
+                  </a>
+                )}
 
                 <a
                   href={igLink}
@@ -238,14 +259,28 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate }) => 
                   YouTube
                 </a>
 
-                <a
-                  href={spLink}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-3 py-2 bg-[#121217] border border-[#C7C9CE]/15 text-xs font-mono text-[#F2EEE9] flex-1 text-center"
-                >
-                  Spotify
-                </a>
+                {isSpotifyComingSoon ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      showToast('✨ REBEXXX on Spotify is launching soon! Artist profile in distributor setup.');
+                      setMobileMenuOpen(false);
+                    }}
+                    className="px-3 py-2 bg-[#121217] border border-[#C7C9CE]/15 text-xs font-mono text-[#F2EEE9] flex-1 text-center flex flex-col items-center justify-center gap-0.5"
+                  >
+                    <span>Spotify</span>
+                    <span className="text-[9px] text-amber-300 font-sans tracking-wide">Coming Soon</span>
+                  </button>
+                ) : (
+                  <a
+                    href={spLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="px-3 py-2 bg-[#121217] border border-[#C7C9CE]/15 text-xs font-mono text-[#F2EEE9] flex-1 text-center"
+                  >
+                    Spotify
+                  </a>
+                )}
                 <a
                   href={igLink}
                   target="_blank"

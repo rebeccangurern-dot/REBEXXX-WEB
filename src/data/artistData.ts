@@ -191,10 +191,10 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     platform: 'Spotify',
-    handle: 'REBEXXX',
-    url: 'https://open.spotify.com',
-    status: 'Active',
-    note: 'Official Spotify artist profile, stream releases & save upcoming tracks',
+    handle: 'REBEXXX (Launching Soon)',
+    url: '',
+    status: 'Coming Soon',
+    note: 'Official artist profile arriving on Spotify — currently undergoing distributor verification',
   },
   {
     platform: 'Instagram',
