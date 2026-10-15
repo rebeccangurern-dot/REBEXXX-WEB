@@ -1,0 +1,6 @@
+{
+  "name": "REBEXXX — Official Artist Website",
+  "description": "Enter the world of REBEXXX, a genre-fluid singer-songwriter and multidisciplinary artist based in Nairobi, Kenya. Discover her music, words, visuals, and evolving creative universe.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
